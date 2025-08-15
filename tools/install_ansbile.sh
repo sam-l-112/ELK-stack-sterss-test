@@ -2,10 +2,16 @@
 set -e
 
 # Update package list
-sudo apt update
+ sudo apt update && sudo apt upgrade -y
+
+ # Install additional tools
+ sudo apt-get dist-upgrade -y
 
 # Install ansible
 sudo apt install -y ansible
+
+# Install additional tools
+sudo apt install -y tree
 
 # Ensure Python venv module is installed
 # sudo apt install -y python3.12-venv
