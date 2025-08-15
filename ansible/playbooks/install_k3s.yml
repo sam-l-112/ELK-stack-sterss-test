@@ -221,9 +221,10 @@
         wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
       # kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/k8s-manifests/kube-flannel.yaml
 
-    - name: Activate virtual environment 
-      shell: |
-        source .venv/bin/activate
+    - name: Activate virtual environment
+      shell: source .venv/bin/activate
+      args:
+        executable: /bin/bash
 
     - name: Activate bashrc
       shell: |
