@@ -67,13 +67,6 @@
         state: present
       become: false 
 
-    - name: 設定 KUBECONFIG 環境變數
-      become: false
-      lineinfile:
-        path: "/home/{{ ansible_user }}/.bashrc"
-        line: "export KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
-        state: present
-
     - name: Enable kubectl autocompletion in .bashrc
       lineinfile:
         path: "/home/{{ ansible_user }}/.bashrc"
@@ -210,6 +203,11 @@
         owner: ubuntu
         group: ubuntu
         mode: '0644'
+
+    - name: Activate virtual environment 
+      shell: |
+        source .venv/bin/activate
+        source ~/.bashrc
 
 - name: Install Elastic、Operator、CRDs、Flannel
   hosts: all[0]

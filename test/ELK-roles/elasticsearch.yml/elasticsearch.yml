@@ -11,7 +11,6 @@ spec:
     config:
       node.roles: ["master"]
       cluster.name: "quickstart"
-      # 這裡用 headless service 名稱，不用帶 pod 名稱
       discovery.seed_hosts: ["quickstart-es-master-node"]
       cluster.initial_master_nodes: ["quickstart-es-master-node-0"]
     volumeClaimTemplates:
@@ -63,7 +62,7 @@ spec:
 #           requests:
 #             storage: 10Gi
 #         storageClassName: standard
-
+# 這裡用 headless service 名稱，不用帶 pod 名稱
 # ---
 # apiVersion: elasticsearch.k8s.elastic.co/v1
 # kind: Elasticsearch

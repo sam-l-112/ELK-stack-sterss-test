@@ -44,7 +44,7 @@ spec:
       - matchExpressions:
         - key: kubernetes.io/hostname
           operator: In
-          values: ["vm2"] #在這裡朋友
+          values: ["vm0"] #在這裡朋友
   claimRef:
     namespace: default
     name: elasticsearch-data-quickstart-es-master-node-1
@@ -68,7 +68,7 @@ spec:
       - matchExpressions:
         - key: kubernetes.io/hostname
           operator: In
-          values: ["vm3"] #在這裡朋友
+          values: ["vm1"] #在這裡朋友
   claimRef:
     namespace: default
     name: elasticsearch-data-quickstart-es-master-node-2
@@ -119,7 +119,7 @@ spec:
       - matchExpressions:
         - key: kubernetes.io/hostname
           operator: In
-          values: ["vm2"] #在這裡朋友
+          values: ["vm0"] #在這裡朋友
   claimRef:
     namespace: default
     name: elasticsearch-data-quickstart-es-data-nodes-1
@@ -143,7 +143,7 @@ spec:
       - matchExpressions:
         - key: kubernetes.io/hostname
           operator: In
-          values: ["vm3"] #在這裡朋友
+          values: ["vm1"] #在這裡朋友
   claimRef:
     namespace: default
     name: elasticsearch-data-quickstart-es-data-nodes-2
