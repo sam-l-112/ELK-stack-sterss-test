@@ -204,11 +204,6 @@
         group: ubuntu
         mode: '0644'
 
-    - name: Activate virtual environment 
-      shell: |
-        source .venv/bin/activate
-        source ~/.bashrc
-
 - name: Install Elastic、Operator、CRDs、Flannel
   hosts: all[0]
   become: true
@@ -225,3 +220,11 @@
       shell: |
         wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
       # kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/k8s-manifests/kube-flannel.yaml
+
+    - name: Activate virtual environment 
+      shell: |
+        source .venv/bin/activate
+
+    - name: Activate bashrc
+      shell: |
+        source ~/.bashrc
