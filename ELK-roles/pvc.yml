@@ -136,7 +136,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/ubuntu/pv-data-2 #你資料夾的絕對路徑
+    path: /home/ubuntu/pv-data #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
