@@ -25,7 +25,6 @@
 - name: Set up virtual environment
   hosts: all[0]
   become: true
-  ansible_user: ubuntu
   tasks:
 
     - name: Create virtual environment
