@@ -88,12 +88,6 @@
         state: present
       become: false
 
-    - name: Add kubectl completion for alias k to .bashrc
-      lineinfile:
-        path: "/home/ubuntu/.bashrc"
-        line: 'complete -F __start_kubectl k'
-        state: present
-      become: no
 
     - name: Display all pods in all namespaces
       shell: kubectl get pod -A
