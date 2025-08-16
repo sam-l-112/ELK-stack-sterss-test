@@ -22,6 +22,11 @@
         recurse: true
       # when: inventory_hostname in groups['k3s_agent']
 
+- name: Set up virtual environment
+  hosts: all[0]
+  become: true
+  tasks:
+
     - name: Create virtual environment
       shell: python3 -m venv .venv
 
@@ -38,3 +43,5 @@
       shell: source ~/.bashrc
       args:
         executable: /bin/bash
+        
+# update pod status
