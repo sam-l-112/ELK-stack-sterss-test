@@ -2,10 +2,11 @@
 set -e
 
 # Update package list
- sudo apt update && sudo apt upgrade -y
+ sudo apt update -y
+# sudo apt update && sudo apt upgrade -y
 
- # Install additional tools
- sudo apt-get dist-upgrade -y
+# Install additional tools
+# sudo apt-get dist-upgrade -y
 
 # Install ansible
 sudo apt install -y ansible
