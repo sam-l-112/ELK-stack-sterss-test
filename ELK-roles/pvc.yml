@@ -13,7 +13,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user}}/pv-master #你資料夾的絕對路徑
+    path: /home/rocky/pv-master #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -37,7 +37,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user }}/pv-master #你資料夾的絕對路徑
+    path: /home/rocky/pv-master #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -61,7 +61,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user }}/pv-master #你資料夾的絕對路徑
+    path: /home/rocky/pv-master #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -88,7 +88,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user }}/pv-data #你資料夾的絕對路徑
+    path: /home/rocky/pv-data #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -112,7 +112,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user }}/pv-data #你資料夾的絕對路徑
+    path: /home/rocky/pv-data #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
@@ -136,7 +136,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   volumeMode: Filesystem
   local:
-    path: /home/{{ ansible_user }}/pv-data #你資料夾的絕對路徑
+    path: /home/rocky/pv-data #你資料夾的絕對路徑
   nodeAffinity:
     required:
       nodeSelectorTerms:
