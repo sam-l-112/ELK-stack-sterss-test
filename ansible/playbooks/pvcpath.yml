@@ -4,7 +4,7 @@
   tasks:
     - name: Create master PVC directory
       file:
-        path: /home/ubuntu/pv-master
+        path: /home/{{ ansible_user }}/pv-master
         state: directory
         owner: 1000
         group: 1000 
@@ -14,7 +14,7 @@
 
     - name: Create data PVC directory
       file:
-        path: /home/ubuntu/pv-data
+        path: /home/{{ ansible_user }}/pv-data
         state: directory
         owner: 1000
         group: 1000
