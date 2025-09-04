@@ -93,7 +93,7 @@
     - name: Display all pods in all namespaces
       shell: kubectl get pod -A
       environment:
-        KUBECONFIG: "/home/ubuntu/.k3s/k3s.yaml"
+      KUBECONFIG: "/home/{{ ansible_user }}/.k3s/k3s.yaml"
       register: pods_output
       changed_when: false
 
@@ -105,7 +105,7 @@
     - name: Add elastic Helm repo
       shell: helm repo add elastic https://helm.elastic.co
       args:
-        creates: /home/ubuntu/.cache/helm/repository/elastic-index.yaml
+      creates: /home/{{ ansible_user }}/.cache/helm/repository/elastic-index.yaml
       become: false
 
     - name: Update Helm repos
@@ -118,7 +118,7 @@
   become: true
   gather_facts: false
   vars:
-    ansible_user: ubuntu
+    ansible_user: rocky
     k3s_token: "{{ hostvars[groups['all'][0]].node_token.stdout }}" # 從 k3s server 獲取 token
     k3s_server: "{{ groups['all'][0] }}"  # 獲取第一個 k3s server 的 IP | first
     # 移除 k3s_agent_ip_1, k3s_agent_ip_2，直接在 debug 用 inventory_hostname
