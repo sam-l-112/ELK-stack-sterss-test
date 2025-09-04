@@ -1,11 +1,10 @@
 - name: Set up PVC directory
   hosts: all
   become: true
-  ansible_user: rocky
   tasks:
     - name: Create master PVC directory
       file:
-        path: /home/{{ ansible_user }}/pv-master
+        path: /home/rocky/pv-master
         state: directory
         owner: 1000
         group: 1000 
@@ -15,7 +14,7 @@
 
     - name: Create data PVC directory
       file:
-        path: /home/{{ ansible_user }}/pv-data
+        path: /home/rocky/pv-data
         state: directory
         owner: 1000
         group: 1000

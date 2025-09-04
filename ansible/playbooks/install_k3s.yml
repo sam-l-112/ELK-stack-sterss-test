@@ -93,7 +93,7 @@
     - name: Display all pods in all namespaces
       shell: kubectl get pod -A
       environment:
-      KUBECONFIG: "/home/{{ ansible_user }}/.k3s/k3s.yaml"
+        KUBECONFIG: "/home/{{ ansible_user }}/.k3s/k3s.yaml"
       register: pods_output
       changed_when: false
 
@@ -105,7 +105,7 @@
     - name: Add elastic Helm repo
       shell: helm repo add elastic https://helm.elastic.co
       args:
-      creates: /home/{{ ansible_user }}/.cache/helm/repository/elastic-index.yaml
+        creates: /home/{{ ansible_user }}/.cache/helm/repository/elastic-index.yaml
       become: false
 
     - name: Update Helm repos
@@ -167,10 +167,10 @@
         kubectl apply -f https://download.elastic.co/downloads/eck/3.1.0/operator.yaml
 
     - name: Install Flannel
-      shell: |
-        wget -O /root/kube-flannel.yml https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-      args:
-        creates: /root/kube-flannel.yml
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+        dest: /root/kube-flannel.yml
+        mode: '0600'
 
   
     - name: Change flannel pod CIDR to 10.42.0.0/16
