@@ -1,6 +1,7 @@
 - name: Set up PVC directory
   hosts: all
   become: true
+  ansible_user: rocky
   tasks:
     - name: Create master PVC directory
       file:
