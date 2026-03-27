@@ -4,7 +4,8 @@
   become: true
   gather_facts: false
   vars:
-    ansible_user: ubuntu
+    ansible_user: rocky
+    # ansible_user: ubuntu
   tasks:
     - name: Remove old k3s if exists
       shell: |
@@ -41,7 +42,7 @@
     - name: 設定 /etc/rancher/k3s/k3s.yaml 權限
       file:
         path: /etc/rancher/k3s/k3s.yaml
-        mode: "0644"
+        mode: "0755"
       become: true
 
     - name: 讀取 node-token
@@ -58,7 +59,7 @@
         remote_src: yes
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
-        mode: "0644"
+        mode: "0755"
 
     - name: Set KUBECONFIG environment variable in .bashrc
       lineinfile:
@@ -88,17 +89,11 @@
         state: present
       become: false
 
-    - name: Add kubectl completion for alias k to .bashrc
-      lineinfile:
-        path: "/home/ubuntu/.bashrc"
-        line: 'complete -F __start_kubectl k'
-        state: present
-      become: no
 
     - name: Display all pods in all namespaces
       shell: kubectl get pod -A
       environment:
-        KUBECONFIG: "/home/ubuntu/.k3s/k3s.yaml"
+        KUBECONFIG: "/home/{{ ansible_user }}/.k3s/k3s.yaml"
       register: pods_output
       changed_when: false
 
@@ -110,7 +105,7 @@
     - name: Add elastic Helm repo
       shell: helm repo add elastic https://helm.elastic.co
       args:
-        creates: /home/ubuntu/.cache/helm/repository/elastic-index.yaml
+        creates: /home/{{ ansible_user }}/.cache/helm/repository/elastic-index.yaml
       become: false
 
     - name: Update Helm repos
@@ -123,7 +118,7 @@
   become: true
   gather_facts: false
   vars:
-    ansible_user: ubuntu
+    ansible_user: rocky
     k3s_token: "{{ hostvars[groups['all'][0]].node_token.stdout }}" # 從 k3s server 獲取 token
     k3s_server: "{{ groups['all'][0] }}"  # 獲取第一個 k3s server 的 IP | first
     # 移除 k3s_agent_ip_1, k3s_agent_ip_2，直接在 debug 用 inventory_hostname
@@ -159,57 +154,12 @@
     - name: 確認 agent 是否啟動
       debug:
         msg: "{{ item }} K3s Agent is running"
-      loop: "{{ groups['all'][1:] }}"
-
-# 1. 從 server 拉 kubeconfig 到本機
-- name: Fetch kubeconfig from k3s server
-  hosts: all[0]
-  become: true
-  tasks:
-    - name: Fetch k3s.yaml to controller
-      fetch:
-        src: /etc/rancher/k3s/k3s.yaml
-        dest: /tmp/k3s.yaml
-        flat: yes
-
-# 2. 分發 kubeconfig 到所有 agent
-- name: Distribute kubeconfig to all nodes
-  hosts: all[1:]
-  become: true
-  vars:
-    k3s_server: "{{ groups['all'][0] }}"
-  tasks:
-    - name: Ensure .k3s directory exists on agent
-      file:
-        path: /home/ubuntu/.k3s
-        state: directory
-        owner: ubuntu
-        group: ubuntu
-        mode: '0755'
-
-    - name: Copy kubeconfig to agent node
-      copy:
-        src: /tmp/k3s.yaml
-        dest: /home/ubuntu/.k3s/k3s.yaml
-        owner: ubuntu
-        group: ubuntu
-        mode: '0644'
-
-    - name: Replace server IP in kubeconfig on agent
-      replace:
-        path: /home/ubuntu/.k3s/k3s.yaml
-        regexp: 'server: https://127.0.0.1:6443'
-        replace: "server: https://{{ groups['all'][0] }}:6443"
-        owner: ubuntu
-        group: ubuntu
-        mode: '0644'
+      loop: "{{ groups['all'][1:] }}"  
 
 - name: Install Elastic、Operator、CRDs、Flannel
   hosts: all[0]
   become: true
   gather_facts: false
-  vars:
-    ansible_user: ubuntu
   tasks:
     - name: Install Elastic CRDs  Operator version 3.1.0
       shell: |
@@ -217,8 +167,18 @@
         kubectl apply -f https://download.elastic.co/downloads/eck/3.1.0/operator.yaml
 
     - name: Install Flannel
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+        dest: /root/kube-flannel.yml
+        mode: '0600'
+
+  
+    - name: Change flannel pod CIDR to 10.42.0.0/16
+      ansible.builtin.replace:
+        path: /root/kube-flannel.yml
+        regexp: '"Network": "10\.244\.0\.0/16"'
+        replace: '"Network": "10.42.0.0/16"'
+
+    - name: Apply flannel manifest
       shell: |
-        wget https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-      # kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/k8s-manifests/kube-flannel.yaml
-
-
+        kubectl apply -f  /root/kube-flannel.yml

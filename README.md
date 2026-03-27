@@ -1,5 +1,5 @@
-# ELK-stack-multiple-node
-
+## ELK 前置作業 使用 ansible 部署
+# 功能說明
 ## update ansibel
 - 支援一鍵執行 Ansible Playbook，透過 `ansible-playbook` 指令自動部署 k3s、ELK 相關服務。
 - Playbook 可自動安裝 master/agent 節點，並完成 kubeconfig 權限、ELK 角色等配置。
